@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Course Registration System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="toast" class="toast"></div>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-box">
+    <div class="logo">🎓</div>
+    <h1>CourseHub</h1>
+    <p>Student Course Registration System</p>
+    <div class="login-tabs">
+      <button class="tab active" data-login="student">Student</button>
+      <button class="tab" data-login="admin">Admin / Officer</button>
+    </div>
+    <div id="studentLogin">
+      <label>Student Name</label><input id="studentName" placeholder="Enter your name">
+      <label>Student ID</label><input id="studentId" placeholder="Example: STU001">
+      <label>Department</label>
+      <select id="studentDept"><option>Computer Science</option><option>Information Technology</option><option>Electronics</option><option>Commerce</option></select>
+      <button class="primary full" id="studentLoginBtn">Login</button>
+    </div>
+    <div id="adminLogin" class="hidden">
+      <label>Officer ID</label><input id="adminId" placeholder="admin">
+      <label>Password</label><input id="adminPass" type="password" placeholder="admin123">
+      <button class="primary full" id="adminLoginBtn">Officer Login</button>
+      <small>Demo login: admin / admin123</small>
+    </div>
+    <small>Demo project — data is stored in this browser.</small>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+<aside class="sidebar">
+  <div class="brand"><span>🎓</span><div><b>CourseHub</b><small>Registration System</small></div></div>
+  <nav id="studentNav">
+    <button class="nav active" data-page="dashboard">🏠 Dashboard</button>
+    <button class="nav" data-page="courses">📚 Courses</button>
+    <button class="nav" data-page="register">📝 Register Course</button>
+    <button class="nav" data-page="mycourses">🎒 My Courses</button>
+    <button class="nav" data-page="search">🔍 Search</button>
+    <button class="nav" data-page="profile">👤 Profile</button>
+    <button class="nav" data-page="about">ℹ️ About Project</button>
+  </nav>
+  <nav id="adminNav" class="hidden">
+    <button class="nav active" data-page="adminDashboard">📊 Admin Dashboard</button>
+    <button class="nav" data-page="students">👨‍🎓 Students</button>
+    <button class="nav" data-page="adminCourses">📚 Course Management</button>
+    <button class="nav" data-page="registrations">📝 Registrations</button>
+    <button class="nav" data-page="about">ℹ️ About Project</button>
+  </nav>
+  <div class="side-bottom">
+    <div id="userMini"></div>
+    <button id="logout" class="logout">↪ Logout</button>
+  </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div><button id="menu" class="menu">☰</button><span class="eyebrow">ACADEMIC PORTAL</span><h2 id="pageTitle">Dashboard</h2></div>
+  <div id="dateTime"></div>
+</header>
+
+<!-- STUDENT PAGES -->
+<section id="dashboard" class="page">
+  <div class="hero"><div><span class="eyebrow white">WELCOME BACK</span><h1>Hello, <span id="welcome"></span> 👋</h1><p>Register and manage your college courses easily.</p><button class="light" data-go="register">Register a Course →</button></div><div class="hero-art">🎓</div></div>
+  <div class="stats" id="studentStats"></div>
+  <div class="columns">
+    <div class="card"><div class="card-title"><h3>Quick Actions</h3></div><div class="quick-grid">
+      <button data-go="courses">📚<b>Browse Courses</b><small>View all courses</small></button>
+      <button data-go="register">➕<b>Register</b><small>Add a course</small></button>
+      <button data-go="mycourses">🎒<b>My Courses</b><small>Manage courses</small></button>
+      <button data-go="search">🔍<b>Search</b><small>Find a course</small></button>
+    </div></div>
+    <div class="card"><div class="card-title"><h3>Linked List</h3><span class="badge">Data Structure</span></div><div id="linkedPreview" class="nodes"></div><p class="muted">Registered courses are maintained as linked-list nodes. Registration performs insertion and dropping performs deletion.</p></div>
+  </div>
+</section>
+
+<section id="courses" class="page">
+  <div class="section-head"><div><h2>Available Courses</h2><p>Browse all courses and check seat availability.</p></div><select id="sort"><option value="id">Sort: Course ID</option><option value="name">Sort: Name</option><option value="credits">Sort: Credits</option><option value="seats">Sort: Seats</option></select></div>
+  <div id="courseGrid" class="course-grid"></div>
+</section>
+
+<section id="register" class="page">
+  <div class="section-head"><div><h2>Register Course</h2><p>Select a course and add it to your registration list.</p></div></div>
+  <div class="card register-box"><label>Choose Course</label><select id="registerSelect"></select><button class="primary" id="registerBtn">Register Course</button><div id="registerMsg"></div></div>
+  <div class="card"><h3>Registration Rules</h3><ul class="rules"><li>A course can be registered only once.</li><li>Registration is blocked when seats are full.</li><li>Registered courses are stored using a Linked List.</li><li>Drop a course from the My Courses page.</li></ul></div>
+</section>
+
+<section id="mycourses" class="page">
+  <div class="section-head"><div><h2>My Registered Courses</h2><p>Your current course registration details.</p></div></div>
+  <div class="card" id="myCourses"></div>
+</section>
+
+<section id="search" class="page">
+  <div class="section-head"><div><h2>Search Courses</h2><p>Linear Search by Course ID or Course Name.</p></div></div>
+  <div class="card searchbar"><input id="searchInput" placeholder="Try CS101 or Java"><button class="primary" id="searchBtn">🔍 Search</button></div>
+  <div id="searchResult"></div>
+</section>
+
+<section id="profile" class="page">
+  <div class="section-head"><div><h2>Student Profile</h2><p>Your account information.</p></div></div>
+  <div class="card profile-card"><div class="profile-avatar">S</div><div><h2 id="profileName"></h2><p id="profileId"></p><p id="profileDept"></p></div></div>
+</section>
+
+<!-- ADMIN PAGES -->
+<section id="adminDashboard" class="page">
+  <div class="hero admin-hero"><div><span class="eyebrow white">OFFICER PORTAL</span><h1>Administration Dashboard</h1><p>Monitor students, courses and registrations.</p></div><div class="hero-art">📊</div></div>
+  <div class="stats" id="adminStats"></div>
+  <div class="card"><div class="card-title"><h3>Recent Registrations</h3></div><div id="recentRegs"></div></div>
+</section>
+
+<section id="students" class="page">
+  <div class="section-head"><div><h2>Registered Students</h2><p>Students who have logged into this demo system.</p></div></div>
+  <div class="card" id="studentsTable"></div>
+</section>
+
+<section id="adminCourses" class="page">
+  <div class="section-head"><div><h2>Course Management</h2><p>View course capacity and registration count.</p></div></div>
+  <div class="card" id="adminCourseTable"></div>
+</section>
+
+<section id="registrations" class="page">
+  <div class="section-head"><div><h2>All Registrations</h2><p>Course registrations submitted by students.</p></div></div>
+  <div class="card" id="registrationsTable"></div>
+</section>
+
+<section id="about" class="page">
+  <div class="section-head"><div><h2>About Project</h2><p>Student Course Registration System using data structures.</p></div></div>
+  <div class="about-grid">
+    <div class="card about"><span>🔗</span><h3>Linked List</h3><p>Each student's registered courses are represented as nodes connected to the next node. Add and drop operations demonstrate insertion and deletion.</p></div>
+    <div class="card about"><span>🔍</span><h3>Searching</h3><p>Linear Search checks courses one by one and returns a matching Course ID or name.</p></div>
+    <div class="card about"><span>🔃</span><h3>Sorting</h3><p>Bubble Sort arranges available courses by ID, name, credits or seats.</p></div>
+  </div>
+  <div class="card tech"><h3>Technology & Modules</h3><div class="chips"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Linked List</span><span>Linear Search</span><span>Bubble Sort</span><span>Student Module</span><span>Officer Module</span><span>Local Storage</span></div></div>
+</section>
+</main>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>
